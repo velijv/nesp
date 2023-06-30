@@ -1,0 +1,9 @@
+{
+  "chipFamily": "ESP32-S2",
+  "parts": [
+    {
+      "path": "nesp-esp32/nesp-esp32.bin",
+      "offset": 0
+    }
+  ]
+}
