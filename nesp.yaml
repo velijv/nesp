@@ -1,0 +1,785 @@
+# These substitutions allow the end user to override certain values
+substitutions:
+  friendly_name: 'nESP'
+  device_name: 'nesp'
+  node_name: 'nesp'
+  device_description: 'Rotary Display thermostat on WT-0-S2-240NW1 device with ESP32-S2-SOLO (16MB) with ST7789V2 display'  
+  # Xtensa® 32-bit LX 7 single-core processor, operating frequency up to 240MHZ. And integrated a wealth of peripherals, such as SPI, 12S, UART, 12C and so on. This product is developed through a function baseboard. 
+  # For details, see ESP_IO38, ESP_IO39, ESP_IO40, ESP_IO41, ESP_IO42, and ESP_ IO2 to expand other peripherals, as shown in Figure 6
+  project_base: 'Veli'
+  project_name: 'Knob'
+  project_version: '0.2'
+##########################################################
+# Home assistant climate entity you want to control with nESP
+# replace this with your own
+##########################################################
+
+  climate_entity: climate.livingroom
+  min_value: "15"
+  max_value: "35"
+  initial_value: "20"
+
+##########################################################
+# /end customizing
+##########################################################  
+  # for QR code generating
+  ap_ssid: ${device_name}
+  ap_password: ${device_name}
+
+esphome:
+  name: ${device_name}
+  # Automatically add the mac address to the name
+  # so you can use a single firmware for all devices
+  name_add_mac_suffix: false  
+  friendly_name: ${friendly_name}
+  comment: ${device_description}
+  # This will allow for (future) project identification,
+  # configuration and updates.  
+  project:
+    name: ${project_base}.${project_name}
+    version: $project_version
+  # special board needs special options    
+  platformio_options:
+    platform: https://github.com/platformio/platform-espressif32.git
+    board: esp32-s2-saola-1
+    framework: arduino
+    platform_packages:
+      - framework-arduinoespressif32 @ https://github.com/espressif/arduino-esp32    
+  on_boot:
+    priority: -100.0 #  At this priority, pretty much everything should already be initialized. 
+    then: 
+      - script.execute: show_page_boot
+
+esp32:
+  board: esp32-s2-saola-1
+  framework:
+    type: arduino
+    version: latest
+
+# To be able to get logs from the device via serial and api.
+logger:
+
+# API is a requirement of the dashboard import.
+api:
+
+# OTA is required for Over-the-Air updating
+ota:
+
+# This should point to the public location of this yaml file.
+dashboard_import:
+  package_import_url: github://velijv/nESP-Thermostat/nesp.yaml@main
+
+wifi:
+  # Set up a wifi access point using the device name above
+  ap:
+    password: "12345678"
+
+# In combination with the `ap` this allows the user
+# to provision wifi credentials to the device.
+captive_portal:
+
+##########################################################
+# Most projects should not remove anything from above here
+# and should just modify the name, project name/version 
+# and git url for the dashboard_import
+##########################################################
+
+
+# Sets up Bluetooth LE (Only on ESP32) to allow the user
+# to provision wifi credentials to the device.
+## esp32_improv:
+##  authorizer: none
+## > ESP32S2 does not support Bluetooth
+
+# Sets up the improv via serial client for Wi-Fi provisioning.
+# Handy if your device has a usb port for the user to add credentials when they first get it.
+improv_serial:
+  next_url: https://veli.ee/esphome?device_name={{device_name}}&ip_address={{ip_address}}&esphome_version={{esphome_version}}  
+
+##########################################################
+# nESP starts here
+##########################################################
+
+packages:
+  colors: !include colors/HOMEASSISTANT
+
+font:
+  - file: 'gfonts://Roboto@400'
+    glyphs: '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ°.:/+- ' 
+    id: regular
+    size: 24
+  - file: 'gfonts://Roboto@400'
+    glyphs: ' -0123456789°Cecohi'
+    id: huge
+    size: 80
+  - file: 'gfonts://Roboto@400'
+    glyphs: ' -0123456789°Cecohi'
+    id: medium
+    size: 60
+  - file: 'fonts/fa-regular-400.ttf'
+    glyphs: "\uf06c\uf7ae\uf79a\uf06d\uf1eb\ue137\uf011\ue487\uf293\ue00d\uf015\ue1b0\uf624\ue3b0\ue1a7\uf2dc\ue004\uf775\uf2f1\uf863\uf750\uf017"
+    id: symbol
+    size: 32
+
+output:
+  - platform: ledc
+    id: ${device_name}_backlight_pwm
+    pin: 35
+    zero_means_zero: true
+
+light:
+  - platform: monochromatic
+    id: ${device_name}_backlight
+    output: ${device_name}_backlight_pwm
+    icon: mdi:brightness-percent
+    name: None
+    default_transition_length: 500ms
+    restore_mode: ALWAYS_ON
+    on_turn_on:
+      then:
+        - component.update: ${device_name}_display
+        - if:
+            condition:
+              or:
+                - display.is_displaying_page: page_qr_wifi
+                - display.is_displaying_page: page_qr_esphome
+                - display.is_displaying_page: page_boot
+            then:
+              - light.turn_on: ${device_name}_backlight
+            else:
+              - delay: 120s
+              - light.turn_off: ${device_name}_backlight
+
+
+select: 
+  - platform: template
+    name: Page
+    id: ${device_name}_page
+    internal: true
+    options:
+      - boot
+      - qr_wifi
+      - qr_esphome
+      - climate
+    optimistic: true
+    on_value:
+      then:
+      - lambda: |-
+          auto page = id(${device_name}_page).state;
+          auto display = id(${device_name}_display);
+          if ("climate" == page){
+            display->show_page( id(page_climate) );
+          }
+          if ("boot" == page){
+            display->show_page( id(page_boot) );
+          }
+          if ("qr_wifi" == page){
+            display->show_page( id(page_qr_wifi) );
+          }
+          if ("qr_esphome" == page){
+            display->show_page( id(page_qr_esphome) );
+          }
+
+switch: 
+  - platform: gpio
+    pin: 
+      number: 18
+    name: Motor
+    id: ${device_name}_motor
+    entity_category: diagnostic
+    icon: mdi:vibrate
+    on_turn_on:
+      then:
+        - delay: 0.1s
+        - switch.turn_off: ${device_name}_motor
+    internal: true
+
+number:
+  - platform: template
+    name: Template Number
+    min_value: ${min_value}
+    max_value: ${max_value}
+    step: 1
+    id: ${device_name}_number
+    optimistic: true    
+    restore_value: true 
+    initial_value: ${initial_value} # Defaults to min_value.
+    set_action: 
+      then:
+        - logger.log: "placeholder set_action"
+        - script.execute: show_page_climate
+    on_value:
+      then:
+## TBD        
+#        - homeassistant.service:
+#            service: climate.set_temperature
+#            data:
+#              temperature: !lambda 'return x;'
+#              entity_id: $climate_entity
+        - script.execute: show_page_climate
+
+script:
+  # motor
+  - id: vibrate
+    then: 
+      - switch.turn_on: ${device_name}_motor
+      - logger.log: "vibrate"
+  # display pages
+  - id: show_page_boot
+    mode: single
+    then: 
+      - display.page.show: page_boot
+      - delay: 5s
+      - if:
+          condition:
+            and:
+              - wifi.connected:
+              - api.connected:
+          then:
+            - script.execute: show_page_climate
+          else:
+            - script.stop: show_page_boot
+            - script.execute: show_page_boot
+  - id: show_page_climate
+    then:
+      - script.execute: display_on
+      - display.page.show: page_climate 
+  - id: decrement_number
+    then:
+      - number.decrement: ${device_name}_number
+  - id: increment_number
+    then:
+      - number.increment: ${device_name}_number
+  - id: display_off
+    then:
+      - light.turn_off: ${device_name}_backlight
+  - id: display_on
+    then:
+      - light.turn_on: ${device_name}_backlight
+      - component.update: ${device_name}_display
+
+binary_sensor: 
+
+  - platform: gpio
+    pin: 
+      number: 17 
+    name: Turn Left # is okay
+    internal: true
+    id: ${device_name}_gpio17_debounced
+
+  - platform: gpio
+    pin: 
+      number: 16
+    name: Turn Right
+    id: ${device_name}_gpio16_debounced
+    internal: true
+    filters:
+## Cant get it to work reliably      
+#      - delayed_off: 200ms
+#      - delayed_on_off: 300ms
+      - delayed_on: 200ms
+      - delayed_off: 500ms
+#      - delayed_on_off: 300ms
+      - lambda: |-
+          if (id(${device_name}_gpio17_debounced).state) {
+            return x;
+          } else {
+            return {};
+          }
+    on_state:
+      then:
+        - lambda: |-
+            if (id(${device_name}_gpio17_debounced).state) {
+              id(increment_number).execute();
+            } else {
+              id(decrement_number).execute();
+            }
+        - script.execute: vibrate
+
+  - platform: gpio
+    pin: 
+      number: 2 #GPIO5 #GPIO14 # GPIO12
+#      mode: INPUT_PULLUP
+#      inverted: true
+      mode:
+        input: true
+        pullup: true
+    name: Button
+    internal: true
+    id: ${device_name}_button
+    icon: mdi:circle-outline
+## Cant get it to work reliably    
+    filters:
+#      - invert:
+      - delayed_on: 200ms 
+      # When a signal ON is received, wait until publishing an ON state. If an OFF value is received while waiting, the ON action is discarded. 
+      # Only send an ON value if the binary sensor has stayed ON for at least the specified time period. 
+      ## Useful for debouncing push buttons.
+      - delayed_off: 100ms 
+      # When a signal OFF is received, wait until publishing an OFF state. 
+      # If an ON value is received while waiting, the OFF action is discarded. 
+      # Only send an OFF value if the binary sensor has stayed OFF for at least the specified time period. 
+      ## Useful for debouncing push buttons.
+      - delayed_on_off: 300ms 
+      # Only send an ON or OFF value if the binary sensor has stayed in the same state for at least the specified time period. 
+      ## Useful for debouncing binary switches.
+    on_press:
+      - lambda: |-      
+          ESP_LOGW("button", "pressed at %lu", millis());
+    on_release:
+      - lambda: |-      
+          ESP_LOGE("button", "release at %lu", millis());
+#    on_press:
+#      then: 
+#        - lambda: |-
+#            ESP_LOGE("button", "on_press");        
+#        - script.execute: vibrate
+#    on_click:
+#      then: 
+#        - lambda: |-
+#            ESP_LOGE("button", "on_click");        
+#    on_multi_click:
+#      - timing: !include common/click/single.yaml
+#        then:
+#          - script.execute: display_on 
+
+sensor:
+## Did not work at all because turning right is a nightmare
+
+##  - platform: rotary_encoder
+##    name: Rotary Encoder
+##    id: ${device_name}_rotary
+##    entity_category: diagnostic
+##    icon: mdi:cached
+###    internal: true
+##    pin_a: 
+##      number: 17
+###      inverted: true
+###      mode:
+###        input: true
+###        pullup: true
+##    pin_b: 16
+###      inverted: true
+###      mode:
+###        input: true
+###        pullup: true
+##    resolution: 1
+##    min_value: ${min_value}
+##    max_value: ${max_value}
+##    publish_initial_value: true
+##    restore_mode: RESTORE_DEFAULT_ZERO
+##    on_clockwise: 
+##      then: 
+##        - lambda: |-
+##            ESP_LOGE("rotary", "on_clockwise: %f", id(${device_name}_rotary).state );
+##    on_anticlockwise: 
+##      then: 
+##        - lambda: |-
+##            ESP_LOGE("rotary", "on_anticlockwise: %f", id(${device_name}_rotary).state );
+
+  - platform: homeassistant
+    entity_id: $climate_entity
+    id: current_temperature
+    entity_category: diagnostic
+    internal: true
+    attribute: current_temperature
+    on_value:
+      - script.execute: display_on
+
+  - platform: homeassistant
+    entity_id: $climate_entity
+    id: min_temp
+    internal: true
+    attribute: min_temp
+
+  - platform: homeassistant
+    entity_id: $climate_entity
+    id: max_temp
+    internal: true
+    attribute: max_temp
+
+  - platform: homeassistant
+    entity_id: $climate_entity
+    id: target_temperature
+    entity_category: diagnostic
+    attribute: temperature
+    internal: true
+
+  - platform: homeassistant
+    entity_id: $climate_entity
+    id: target_temp_high
+    entity_category: diagnostic
+    attribute: target_temp_high
+    internal: true
+
+  - platform: homeassistant
+    entity_id: $climate_entity
+    id: target_temp_low
+    entity_category: diagnostic
+    attribute: target_temp_low
+    internal: true
+
+text_sensor:
+
+   - platform: homeassistant
+     entity_id: $climate_entity
+     id: hvac_mode
+     entity_category: diagnostic
+     internal: true
+ 
+   - platform: homeassistant
+     entity_id: $climate_entity
+     id: hvac_action
+     entity_category: diagnostic
+     internal: true
+     attribute: hvac_action
+ 
+   - platform: homeassistant
+     entity_id: $climate_entity
+     id: preset_mode
+     entity_category: diagnostic
+     internal: true
+     attribute: preset_mode
+
+qr_code:
+  - id: qr_hotspot
+    value: "WIFI:S:${ap_ssid};T:WPA;P:${ap_password};;"
+  - id: qr_esphome
+    value: https://my.home-assistant.io/redirect/config_flow_start/?domain=esphome 
+
+spi:
+  clk_pin: 14 # sck : 14
+  mosi_pin: 33 # sda : 33
+
+display: # 240 x 320
+  - platform: st7789v
+    id: ${device_name}_display
+    model: Custom
+    width: 240
+    height: 320
+    offset_height: 0
+    offset_width: 0
+###
+    eightbitcolor: true # OR IT BREAKS
+###    backlight_pin: GPIO35 ## breaks color
+    update_interval: 20s
+    cs_pin: 34
+    dc_pin: 13
+    reset_pin: 21
+    on_page_change: 
+      then: 
+        - light.turn_on: ${device_name}_backlight
+    pages:
+    - id: page_boot
+      lambda: |-
+        id(${device_name}_page).publish_state("boot");
+
+        // CANVAS DIMENSIONS // width: 240 // height: 320
+        int w = it.get_width();
+        int h = it.get_height();
+
+        auto icon = "\ue1a7"; // hand-wave // \uf293 = bluetooth // \uf1eb = wifi
+        auto color = id(gray);
+
+        static std::vector<Color> colors = {id(mode_heat), id(mode_cool), id(mode_dry), id(mode_fan), id(mode_heat_cool), id(mode_idle), id(mode_eco), id(mode_auto)};
+        int random_index = rand() % colors.size(); // Generate a random index between 0 and the size of the colors vector
+        Color random_color = colors[random_index];        
+
+        it.print(w/2, h/2 , id(huge), random_color, TextAlign::CENTER, "hi");
+        random_index = rand() % colors.size();
+        random_color = colors[random_index];
+        it.print(w/2, w, id(symbol), random_color, TextAlign::CENTER, icon);
+        random_index = rand() % colors.size();
+        random_color = colors[random_index];
+        it.print(w/2, h - 20, id(regular), random_color, TextAlign::CENTER, "nESP");        
+
+    - id: page_qr_wifi
+      lambda: |-
+        id(${device_name}_page).publish_state("qr_wifi");
+
+        // CANVAS DIMENSIONS // width: 240 // height: 320
+        int w = it.get_width();
+        int h = it.get_height();
+
+        auto icon = "\uf1eb"; // \uf293 = bluetooth // \uf1eb = wifi
+        auto color = id(gray);
+
+        static std::vector<Color> colors = {id(mode_heat), id(mode_cool), id(mode_dry), id(mode_fan), id(mode_heat_cool), id(mode_idle), id(mode_eco), id(mode_auto)};
+        int random_index = rand() % colors.size(); // Generate a random index between 0 and the size of the colors vector
+        Color random_color = colors[random_index];        
+
+        it.qr_code(w/3.5, h/4, id(qr_hotspot), random_color, 4);
+        random_index = rand() % colors.size();
+        random_color = colors[random_index];
+        it.print(w/2, w, id(symbol), random_color, TextAlign::CENTER, icon);
+        random_index = rand() % colors.size();
+        random_color = colors[random_index];
+        it.printf(w/2, h - 20, id(regular), random_color, TextAlign::CENTER, "nESP" );
+
+    - id: page_qr_esphome
+      lambda: |-
+        id(${device_name}_page).publish_state("qr_esphome");
+
+        // CANVAS DIMENSIONS // width: 240 // height: 320
+        int w = it.get_width();
+        int h = it.get_height();
+
+        auto icon = "\ue137"; // cloud-slash // "\uf0c1"; // link // "\ue35e"; // cloud-plus
+        auto color = id(gray);
+
+        static std::vector<Color> colors = {id(mode_heat), id(mode_cool), id(mode_dry), id(mode_fan), id(mode_heat_cool), id(mode_idle), id(mode_eco), id(mode_auto)};
+        int random_index = rand() % colors.size(); // Generate a random index between 0 and the size of the colors vector
+        Color random_color = colors[random_index];        
+
+        it.qr_code(w/3.5, h/4, id(qr_esphome), random_color, 4);
+        random_index = rand() % colors.size();
+        random_color = colors[random_index];
+        it.print(w/2, w, id(symbol), random_color, TextAlign::CENTER, icon);
+        random_index = rand() % colors.size();
+        random_color = colors[random_index];
+        it.printf(w/2, h - 20, id(regular), random_color, TextAlign::CENTER, "nESP" );
+
+    - id: page_climate
+      lambda: |-
+        id(${device_name}_page).publish_state("climate");
+
+        // CANVAS DIMENSIONS // width: 240 // height: 320
+        int w = it.get_width();
+        int h = it.get_height();
+        int h2 = h / 2;
+        int w2 = w / 2;
+        int yheader = h / 3;
+        int yfooter = h - 20;
+
+        // font sizes
+        auto main_font = id(huge);
+
+        // text values
+        std::string huge_text = "x";
+        auto get_mode = id(hvac_mode).state;
+        auto get_hvac_action = id(hvac_action).state;
+        auto get_preset_mode = id(preset_mode).state;
+
+        // bools
+        auto dual = false;
+
+        // numeric
+        float get_target_temp_low = id(target_temp_low).state;
+        float get_target_temp_high = id(target_temp_high).state;
+        float get_target_temperature = id(target_temperature).state; 
+        // check for dual mode
+        if (isnan(get_target_temperature) ){
+          dual = true;
+          get_target_temperature = round((get_target_temp_low + get_target_temp_high) / 2);
+        }
+        else { // (!isnan(get_target_temp_high) && !isnan(get_target_temp_low))
+
+        }
+
+        float get_current_temperature = id(current_temperature).state;
+        float minTemp = 15.0;
+        float maxTemp = 30.0;
+
+        // COLORS
+        auto color_neutral = id(graydark);
+        auto color_main = id(graydark);
+        auto color_accent = color_main;
+        auto color_background = id(black);
+        auto linecolor = id(graydarker);
+        auto linecolor_heat = id(mode_heat);
+        auto linecolor_cool = id(mode_cool);
+        // ICON
+        auto icon = "\uf624";
+
+        // Map the current temperature to an angle between the start and end angles
+        float skipStartAngle = 60.0; // Start angle of the skipped range
+        float skipEndAngle = 120.0;   // End angle of the skipped range
+        float angleRange = (360.0 - (skipEndAngle - skipStartAngle));
+        float tempRatio = (get_target_temperature - minTemp) / (maxTemp - minTemp);
+        float tempAngle = skipStartAngle + tempRatio * angleRange;
+        // Adjust the number of stripes and the stripe width
+        int numStripes = w2 / 2;
+        int stripeLength = w / 15;
+        int radius = w2;
+
+        // hvac_mode (state)
+        if ( get_mode == "heat" ){
+          color_main = id(mode_heat);
+          icon = "\uf06d"; // fire
+        }
+        else if (get_mode == "cool") { 
+          color_main = id(mode_cool);
+          icon = "\uf2dc"; // snowflake
+        }
+        else if (get_mode == "dry") { 
+          color_main = id(mode_dry);
+          icon = "\uf750"; // droplet-percent
+        }
+        else if (get_mode == "fan_only") { 
+          color_main = id(mode_fan);
+          icon = "\uf863"; // fan
+        }
+        else if (get_mode == "heat_cool") { 
+          color_main = id(mode_heat_cool);
+          icon = "\uf2f1"; // rotate          
+        }        
+        
+
+        // heat_cool hvac_action options: idle, cooling, heating
+        if (get_hvac_action == "idle") { 
+          if (get_mode == "heat_cool"){
+            color_main = id(mode_heat_cool);
+          }          
+          else if (get_mode == "heat"){
+            color_main = id(mode_heat);
+          }          
+          else if (get_mode == "cool"){
+            color_main = id(mode_cool);
+          }          
+          else{
+            color_main = id(mode_idle);
+            icon = "\uf017"; // clock            
+          }
+          icon = "\uf017"; // clock            
+          color_accent = id(mode_idle);
+        }
+        
+        if ( (get_mode == "off") || (get_hvac_action == "off") ){ 
+          color_main = id(graydarker);
+          color_accent = id(graydark);
+          linecolor = id(graydarker);
+          icon = "\uf011"; // power-off
+        }
+        ////////////////////////////////////////////////////////////////////////////////////
+        // Draw filled circle if not off or idle
+        ////////////////////////////////////////////////////////////////////////////////////
+        if ( (get_hvac_action == "heating") || (get_hvac_action == "cooling") || (get_hvac_action == "drying") || (get_hvac_action == "fan" ) ) { 
+          // stripeLength = stripeLength + w / 40;
+          radius = radius - w / 40;
+          it.filled_circle(w2, h2, w2, color_main);
+          linecolor_heat = id(gray);
+          linecolor_cool = id(black);
+          linecolor = id(white);
+          color_accent = color_main;
+          it.print(w2, yheader, id(regular), color_background, TextAlign::CENTER, get_hvac_action.c_str() );
+        }
+        ////////////////////////////////////////////////////////////////////////////////////
+        // DRAW stripes around circle
+        ////////////////////////////////////////////////////////////////////////////////////
+        int counter = 0;
+        for (int i = 0; i < numStripes; i++) {
+          float angle = 360.0 / numStripes * i;
+          if (angle >= skipStartAngle && angle <= skipEndAngle) {
+            continue;
+          }
+          float angleRad = angle * (3.14159265 / 180.0);
+          int startX = w2 + radius * cos(angleRad);
+          int startY = h2 + radius * sin(angleRad);
+          int endX = w2 + (radius - stripeLength) * cos(angleRad);
+          int endY = h2 + (radius - stripeLength) * sin(angleRad);
+          auto line = linecolor;
+          ////////////////////////////////////////////////////////////////////////////////////
+          // Calculate angles for current and set temperatures
+          ////////////////////////////////////////////////////////////////////////////////////
+          float setTempAngle = skipStartAngle + ((get_target_temperature - minTemp) / (maxTemp - minTemp)) * angleRange;
+          float currentTempAngle = skipStartAngle + ((get_current_temperature - minTemp) / (maxTemp - minTemp)) * angleRange;
+
+          // Check if the angle is within the range of set temperature and current temperature
+          if ((angle >= currentTempAngle && angle <= setTempAngle) || (angle >= setTempAngle && angle <= currentTempAngle)) {
+            if (angle >= currentTempAngle && angle <= setTempAngle) {
+              line = linecolor_heat;
+              it.line(startX, startY, endX, endY, line );
+              } else if (angle >= setTempAngle && angle <= currentTempAngle) {
+                line = linecolor_cool;
+                it.line(startX, startY, endX, endY, line );
+              }
+            } 
+            else {
+              it.line(startX, startY, endX, endY, linecolor );
+            }
+          }
+          ////////////////////////////////////////////////////////////////////////////////////
+          // DRAW CURRENT TEMPERATURE POSITION AS A DOT
+          ////////////////////////////////////////////////////////////////////////////////////
+          // 120 should be minimum // skipEndAngle(60)
+          // 420 should be maximum // 360 + skipStartAngle(120) = 420
+          // float setTempAngle = skipStartAngle + ((get_target_temperature - minTemp) / (maxTemp - minTemp)) * angleRange;
+          // ESP_LOGI("angle", "setTempAngle: %f", setTempAngle);
+
+          float customAngle = tempRatio * (360 - (skipEndAngle - skipStartAngle)) + skipStartAngle;
+
+          // Ensure the custom angle is within the valid range
+          if (customAngle > 420 ){
+            customAngle = 420;
+          }
+          else if (customAngle < 120){
+            customAngle = 120;
+          }
+          float offsetAngle = (customAngle) * (3.14159265 / 180.0); //  0.0174532925;
+          float cosValue = cos(offsetAngle);
+          float sinValue = sin(offsetAngle);
+
+          int outercircleradius = stripeLength / 2;
+          int outercircleX = w2 + (radius - outercircleradius ) * cosValue;
+          int outercircleY = h2 + (radius - outercircleradius ) * sinValue;
+
+          int innercircleradius = outercircleradius - 4;
+          int innercircleX = w2 + (radius - innercircleradius - 4 ) * cosValue;
+          int innercircleY = h2 + (radius - innercircleradius - 4) * sinValue;
+
+          ////////////////////////////////////////////////////////////////////////////////////
+          // DRAW set temperature in middle
+          ////////////////////////////////////////////////////////////////////////////////////
+          if (get_preset_mode == "eco") {
+            huge_text = "eco";
+            color_main = id(mode_eco);
+            } else  {
+                char buffer[32];
+                float value = round(get_target_temperature);
+                if (value != 0 && !isnan(value) ){
+                  snprintf(buffer, sizeof(buffer), "%.0f", value); // Convert float to a C-style string
+                  huge_text = buffer;
+                }                
+            }
+
+              if ( dual ){
+                main_font = id(medium);
+                float value_low = round(get_target_temp_low);
+                float value_high = round(get_target_temp_high);
+                std::string separator = " - ";
+                huge_text = std::to_string((int)value_low) + separator + std::to_string((int)value_high);
+                //ESP_LOGW("display", huge_text.c_str() );
+              }  
+              else {
+                float value = round(get_target_temperature);
+                if (value != 0 && !isnan(value) ){
+                  huge_text = std::to_string((int)value);
+                }                
+
+              }            
+
+              // Draw current temperature at bottom
+              it.printf(w2, yfooter, id(regular), color_neutral, TextAlign::CENTER, "%.0f", get_current_temperature );
+
+              // dual gauge mode:
+              // it.printf(w2, yfooter, id(regular), color_main, TextAlign::CENTER, "%.0f - %.0f", get_target_temp_low, get_target_temp_high);
+
+              //else { it.print(w2, yfooter, id(regular), currentcolor, TextAlign::CENTER, "nESP");}
+
+              // invert colors for filled background
+              if ( (get_hvac_action == "heating") || (get_hvac_action == "cooling") || (get_hvac_action == "drying") || (get_hvac_action == "fan" ) ) { 
+                auto hold = color_accent;
+                color_accent = color_background;
+                color_main = color_background;
+                color_background = hold;
+              }
+
+              // Draw icon 
+              it.print(w2, w, id(symbol), color_main, TextAlign::CENTER, icon);
+
+              // draw set at center
+              it.print(w2, h2 , main_font, color_accent, TextAlign::CENTER, huge_text.c_str() );
+
+              // draw set_temp dot
+              it.filled_circle(outercircleX, outercircleY, outercircleradius, color_accent );
+              it.filled_circle(innercircleX, innercircleY, innercircleradius, color_background );

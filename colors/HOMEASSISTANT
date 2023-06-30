@@ -1,0 +1,170 @@
+# MATERIAL COLOR PALETTE
+# COLORS FROM HOME ASSISTANT BASE
+# https://m2.material.io/design/color/the-color-system.html#tools-for-picking-colors
+
+# check if white or black on color and color on black
+# https://webaim.org/resources/contrastchecker/
+
+color:
+- id: black
+  red:   0.0000
+  green: 0.0000
+  blue:  0.0000
+  white: 0.0000
+
+# #263238 - 900
+- id: graydarker
+  red: 0.149
+  green: 0.196
+  blue: 0.220
+  white: 0.0000
+
+# #455A64 - 700
+- id: graydark
+  red: 0.271
+  green: 0.353
+  blue: 0.392
+  white: 0.0000
+
+# #607D8B - 500
+- id: gray
+  red: 0.376
+  green: 0.490
+  blue: 0.545
+  white: 0.0000
+
+# #90A4AE - 300
+- id: graylight
+  red: 0.565
+  green: 0.643
+  blue: 0.682
+  white: 0.0000
+
+# #CFD8DC - 100
+- id: graylighter
+  red: 0.812
+  green: 0.847
+  blue: 0.863
+  white: 0.0
+
+- id: white
+  red:   1.0000
+  green: 1.0000
+  blue:  1.0000
+  white: 0.0000
+
+### BASIC COLORS
+
+- id: red # F44336               RGB (244, 67, 54)             
+  red: 0.957
+  green: 0.263
+  blue: 0.212
+  white: 0.0
+  
+
+### STATE COLORS
+
+# AUTO - green
+- id: mode_auto
+  red: 0.298
+  green: 0.686
+  blue: 0.314
+  white: 0.0
+
+# OFF - gray 500
+- id: mode_off
+  red: 0.620
+  green: 0.620
+  blue: 0.620
+  white: 0.0
+
+# ECO - green - #4CAF50
+- id: mode_eco
+  red: 0.298
+  green: 0.686
+  blue: 0.314
+  white: 0.0
+
+- id: green
+  red: 0.298
+  green: 0.686
+  blue: 0.314
+  white: 0.0  
+
+# COOL - blue - #2196F3
+- id: mode_cool
+  red: 0.129
+  green: 0.588
+  blue: 0.953
+  white: 0.0
+
+- id: blue
+  red: 0.129
+  green: 0.588
+  blue: 0.953
+  white: 0.0  
+
+# HEAT - deep orange - #FF5722
+- id: mode_heat
+  red: 1.000
+  green: 0.341
+  blue: 0.133
+  white: 0.0
+
+- id: deep_orange
+  red: 1.000
+  green: 0.341
+  blue: 0.133
+  white: 0.0  
+
+# DRY - orange - #FF9800
+- id: mode_dry
+  red: 1.000
+  green: 0.596
+  blue: 0.000
+  white: 0.0
+
+- id: orange
+  red: 1.000
+  green: 0.596
+  blue: 0.000
+  white: 0.0  
+
+# FAN - cyan - #00BCD4
+- id: mode_fan
+  red: 0.000
+  green: 0.737
+  blue: 0.831
+  white: 0.0
+
+- id: cyan
+  red: 0.000
+  green: 0.737
+  blue: 0.831
+  white: 0.0  
+
+# HEAT_COOL - Amber - ##FFC107
+- id: mode_heat_cool
+  red: 1.000
+  green: 0.757
+  blue: 0.027
+  white: 0.0
+
+- id: amber
+  red: 1.000
+  green: 0.757
+  blue: 0.027
+  white: 0.0  
+
+# IDLE - Teal - #009688
+- id: mode_idle
+  red: 0.000
+  green: 0.588
+  blue: 0.533
+  white: 0.0
+
+- id: teal
+  red: 0.000
+  green: 0.588
+  blue: 0.533
+  white: 0.0  

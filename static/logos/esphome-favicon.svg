@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <defs>
+    <path id="reuse-0" fill-rule="nonzero" d="M40.5 38.32h2.87v7.75h17.25v-7.75h2.87l-2.89-2.9v-5.07h-1.8v3.28l-6.81-6.81z" class="fill-black"/>
+    <style>
+    path{color:#000;fill:currentColor;stroke:currentColor;stroke-linecap:round;stroke-linejoin:round}
+    @media(prefers-color-scheme:dark) {path{color:#fff}}
+    </style>      
+  </defs>
+  <path d="M1.3 18H5v10h21.8V18h3.7l-3.7-3.7V7.8h-2.4V12l-8.7-8.7L1.3 18Z"/>
+</svg>

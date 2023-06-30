@@ -10,8 +10,7 @@ jobs:
     strategy:
       matrix:
         file:
-          - project-template-esp32.yaml
-          - project-template-esp8266.yaml
+          - nesp.yaml
     steps:
       - name: Checkout source code
         uses: actions/checkout@v2
