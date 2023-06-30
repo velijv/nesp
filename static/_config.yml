@@ -1,4 +1,6 @@
-# CHANGEME: Set these variable to your liking
-title: nesp
-description: Powered by ESPHome and ESP Web Tools
-theme: jekyll-theme-slate
+title: nESP
+description: Nest Thermostat clone on a rotary display running @esphome
+remote_theme: riggraz/no-style-please
+plugins:
+- jekyll-remote-theme
+google_analytics: G-5H8W7JPJW7
