@@ -7,9 +7,11 @@
 
 ![pic](images/header.svg)
 
-# Nest Thermostat clone on a Rotary Display running [ESPHome](https://esphome.io/)
+## Nest 🔥 Thermostat ❄️ clone on a Rotary Display running [![ESPHome](logos/esphome-logo.svg)](https://esphome.io/)
 
-> 👉 [**Home-assistant community thread for discussion**](https://community.home-assistant.io/t/esphome-nest-thermostat-clone-on-cheap-rotary-display/563296).
+<center> 
+	<h3> 👉 <a href="https://community.home-assistant.io/t/esphome-nest-thermostat-clone-on-cheap-rotary-display/">Home-assistant community thread for discussion</a> 👈</h3>
+</center>
 
 ![pic](images/pic.jpeg)
 
@@ -20,23 +22,20 @@ You can use the button below to install the pre-built firmware directly to your 
 <esp-web-install-button manifest="./manifest.json"></esp-web-install-button>
 <script type="module" src="https://unpkg.com/esp-web-tools@9.1.0/dist/web/install-button.js?module"></script>
 
-<sup> It includes a GitHub workflow that will automatically build the configuration(s) and then deploys a simple 
-website via GitHub pages that utilises [ESP Web Tools](https://esphome.github.io/esp-web-tools/) for users to 
-easily install your project onto their device. </sup>
-
-
 ## Fun features
-* Show a QR code if it’s not connected to wifi
-	- Show another QR code to add it to HA if not connected to API
-* Climate state, temperature, current_temperature, etc
-* Icons, mapped to preset_mode and state
-* Colored background like Nest if heating, text ECO if in eco preset_mode, etc
+* 🛜 Show a QR code if it’s not connected to wifi
+	- 📲 Show another QR code to add it to HA if not connected to API
+* 🎚️ Climate state, temperature, current_temperature, etc
+* 🌡 Icons, mapped to preset_mode and state
+* Colored background like Nest if 🟠 heating, 🔵 cooling, text 🟢 ECO if in eco preset_mode, etc
 
 ## Skin choices
 ### Nest
 ![google-nest](images/google-nest.png)
+
 ### Apple Home
 ![apple-home](images/apple-home.png)
+
 ### Google Home (App)
 ![google-home](images/google-home.png)
 
