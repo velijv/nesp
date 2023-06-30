@@ -1,5 +1,13 @@
-# nESP
-## Nest Thermostat clone on a Rotary Display running [ESPHome](https://esphome.io/)
+<link rel="stylesheet" href="https://veli.ee/esphome/style.css">
+<style>
+	.markdown-body{
+		border:0 !important;
+	}
+</style>
+
+![pic](images/header.svg)
+
+# Nest Thermostat clone on a Rotary Display running [ESPHome](https://esphome.io/)
 
 > 👉 [**Home-assistant community thread for discussion**](https://community.home-assistant.io/t/esphome-nest-thermostat-clone-on-cheap-rotary-display/563296).
 
