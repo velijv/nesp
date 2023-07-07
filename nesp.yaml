@@ -67,7 +67,7 @@ ota:
 
 # This should point to the public location of this yaml file.
 dashboard_import:
-  package_import_url: github://velijv/nESP-Thermostat/nesp.yaml@main
+  package_import_url: github://velijv/nesp/nesp.yaml@main
 
 wifi:
   # Set up a wifi access point using the device name above
