@@ -2,6 +2,8 @@
 ## Nest Thermostat clone on a Rotary Display running [ESPHome](https://esphome.io/)
 > ### 👉 [**Home-assistant community thread for discussion**](https://community.home-assistant.io/t/esphome-nest-thermostat-clone-on-cheap-rotary-display/563296).
 
+Device (aliexpress): [2.4 inch rotary screen WT-0-S2-240NW](https://www.aliexpress.com/item/1005004438528608.html) 
+
 ![cover](static/images/header.svg)
 
 ## Fun features
