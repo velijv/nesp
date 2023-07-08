@@ -5,7 +5,7 @@
 	}
 </style>
 
-![pic](images/header.svg)
+![pic](images/header.png)
 
 ## Nest 🔥 Thermostat ❄️ clone on a Rotary Display running [![ESPHome](logos/esphome-logo.svg)](https://esphome.io/)
 
@@ -51,4 +51,4 @@ _________________
 ###### All product names, logos, and brands are property of their respective owners. All company, product and service names used are for identification purposes only. Use of these names, logos, and brands does not imply endorsement.
 
 <img alt="ESPHome" src="logos/made-for-esphome.svg" height="48">
-<img src="https://veli.ee/northeast/logo?t=coded+in&c=808080&b=03A9F4&t2=%20📟" height="48" alt="Eesti">
+<a href="https://veli.ee"><img src="https://veli.ee/northeast/logo?t=coded+in&c=808080&b=03A9F4&t2=%20📟" height="48" alt="Eesti"></a>
