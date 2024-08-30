@@ -1,3 +1,6 @@
+[![Build and Publish ESPHome firmware and website](https://github.com/velijv/nesp/actions/workflows/publish.yml/badge.svg)](https://github.com/velijv/nesp/actions/workflows/publish.yml) [![pages-build-deployment](https://github.com/velijv/nesp/actions/workflows/pages/pages-build-deployment/badge.svg)](https://github.com/velijv/nesp/actions/workflows/pages/pages-build-deployment)
+
+
 # nESP
 ## Nest Thermostat clone on a Rotary Display running [ESPHome](https://esphome.io/)
 > ### 👉 [Discussion on community.home-assistant.io](https://community.home-assistant.io/t/esphome-nest-thermostat-clone-on-cheap-rotary-display/ "Home-assistant community thread for discussion")
