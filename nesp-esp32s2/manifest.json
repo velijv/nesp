@@ -2,7 +2,7 @@
   "chipFamily": "ESP32-S2",
   "ota": {
     "path": "nesp-esp32s2/nesp-esp32s2.ota.bin",
-    "md5": "39065f517e9121d84c5f2a2f027b9d93"
+    "md5": "66e19d41286b6184471d9a62e3ace2c5"
   },
   "parts": [
     {
