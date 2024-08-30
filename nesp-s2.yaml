@@ -44,7 +44,8 @@ esp32:
   variant: esp32s2
   framework:
     type: esp-idf
-    version: latest
+    version: '5.3.0'
+    platform_version: '6.8.0'
     sdkconfig_options:
       CONFIG_ESPTOOLPY_FLASHSIZE_16MB: y
       CONFIG_COMPILER_OPTIMIZATION: CONFIG_COMPILER_OPTIMIZATION_PERF
