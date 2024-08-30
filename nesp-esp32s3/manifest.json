@@ -1,0 +1,13 @@
+{
+  "chipFamily": "ESP32-S3",
+  "ota": {
+    "path": "nesp-esp32s3/nesp-esp32s3.ota.bin",
+    "md5": "cf509ff80a80733bd45ecef643e15a25"
+  },
+  "parts": [
+    {
+      "path": "nesp-esp32s3/nesp-esp32s3.factory.bin",
+      "offset": 0
+    }
+  ]
+}
