@@ -1,10 +1,18 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 512 512">
   <defs>
     <path id="reuse-0" fill-rule="nonzero" d="M40.5 38.32h2.87v7.75h17.25v-7.75h2.87l-2.89-2.9v-5.07h-1.8v3.28l-6.81-6.81z" class="fill-black"/>
     <style>
-    path{color:#000;fill:currentColor;stroke:currentColor;stroke-linecap:round;stroke-linejoin:round}
-    @media(prefers-color-scheme:dark) {path{color:#fff}}
-    </style>      
+    path{color:#1d2126;fill:currentColor;stroke:currentColor;stroke-linecap:round;stroke-linejoin:round}
+    @media(prefers-color-scheme:dark) {path{color:#F2F4F9}}
+    </style>
   </defs>
-  <path d="M1.3 18H5v10h21.8V18h3.7l-3.7-3.7V7.8h-2.4V12l-8.7-8.7L1.3 18Z"/>
+
+  <g clip-path="url(#a)">
+    <path d="M373 239 267 134c-6-7-16-7-22 0L139 239c-6 6-11 18-11 27v96c0 9 7 16 16 16h63V219c0-4 3-6 6-6h86c3 0 6 2 6 6v26c0 3-3 6-6 6h-54v13h54c3 0 6 3 6 6v26c0 3-3 6-6 6h-54v13h54c3 0 6 3 6 6v26c0 3-3 6-6 6h-60a6 6 0 1 1 0-12h53v-13h-53c-4 0-6-3-6-7v-25c0-4 2-7 6-7h53v-12h-53c-4 0-6-3-6-7v-25c0-4 2-7 6-7h53v-13h-72v153h148c9 0 16-7 16-16v-96c0-9-5-21-11-27Z"/>
+  </g>
+  <defs>
+    <clipPath id="a">
+      <path fill="#fff" d="M128 129h256v256H128z"/>
+    </clipPath>
+  </defs>
 </svg>

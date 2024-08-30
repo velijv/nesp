@@ -1,14 +1,18 @@
 {
-  "name": "nesp",
+  "name": "nESP-S2",
   "version": "",
   "home_assistant_domain": "esphome",
   "new_install_skip_erase": false,
   "builds": [
     {
       "chipFamily": "ESP32-S2",
+      "ota": {
+        "path": "nesp-esp32s2/nesp-esp32s2.ota.bin",
+        "md5": "f20df2dadfb33889b2b1003c36522c34"
+      },
       "parts": [
         {
-          "path": "nesp-esp32/nesp-esp32.bin",
+          "path": "nesp-esp32s2/nesp-esp32s2.factory.bin",
           "offset": 0
         }
       ]
