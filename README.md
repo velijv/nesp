@@ -1,4 +1,8 @@
-[![Build and Publish ESPHome firmware and website](https://github.com/velijv/nesp/actions/workflows/publish.yml/badge.svg)](https://github.com/velijv/nesp/actions/workflows/publish.yml) [![pages-build-deployment](https://github.com/velijv/nesp/actions/workflows/pages/pages-build-deployment/badge.svg)](https://github.com/velijv/nesp/actions/workflows/pages/pages-build-deployment) ![GitHub repo file or directory count](https://img.shields.io/github/directory-file-count/velijv/nesp?style=flat-square&color=rgba(24,188,242,0.1)&labelColor=rgba(24,188,242,0.2)&logo=Github&logoColor=18BCF2) ![GitHub repo size](https://img.shields.io/github/repo-size/velijv/nesp?style=flat-square&color=rgba(24,188,242,0.1)&labelColor=rgba(24,188,242,0.2)&logo=Git&logoColor=18BCF2) ![GitHub commit activity](https://img.shields.io/github/commit-activity/y/velijv/nesp?style=flat-square&color=rgba(24,188,242,0.1)&labelColor=rgba(24,188,242,0.2)&logo=GithubActions&logoColor=18BCF2)
+[![Build and Publish ESPHome firmware and website](https://github.com/velijv/nesp/actions/workflows/publish.yml/badge.svg)](https://github.com/velijv/nesp/actions/workflows/publish.yml) [![pages-build-deployment](https://github.com/velijv/nesp/actions/workflows/pages/pages-build-deployment/badge.svg)](https://github.com/velijv/nesp/actions/workflows/pages/pages-build-deployment) 
+![GitHub repo file or directory count](https://img.shields.io/github/directory-file-count/velijv/nesp?style=flat-square&color=rgba(24,188,242,0.1)&labelColor=rgba(24,188,242,0.2)&logo=Github&logoColor=18BCF2) ![GitHub repo size](https://img.shields.io/github/repo-size/velijv/nesp?style=flat-square&color=rgba(24,188,242,0.1)&labelColor=rgba(24,188,242,0.2)&logo=Git&logoColor=18BCF2) ![GitHub commit activity](https://img.shields.io/github/commit-activity/y/velijv/nesp?style=flat-square&color=rgba(24,188,242,0.1)&labelColor=rgba(24,188,242,0.2)&logo=GithubActions&logoColor=18BCF2) [![Contributors][contributors-shield]][contributors-url]
+[![Forks][forks-shield]][forks-url]
+[![Stargazers][stars-shield]][stars-url]
+[![Issues][issues-shield]][issues-url]
 
 
 # nESP
@@ -52,6 +56,26 @@ _________________
 
 ![pic](static/images/pic.jpeg)
 
+
+_________________
+
+
+
+[contributors-shield]: https://img.shields.io/github/contributors/velijv/nesp?style=flat-square](https://img.shields.io/github/contributors/velijv/nesp?style=flat-square&color=rgba(24,188,242,0.1)&labelColor=rgba(0,200,83,0.2)&logo=gitconnected&logoColor=rgb(0,200,83)
+[contributors-url]: https://github.com/velijv/nesp/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/velijv/nesp?style=flat-square](https://img.shields.io/github/forks/velijv/nesp?style=flat-square&color=rgba(0,184,212,0.1)&labelColor=rgba(0,184,212,0.2)&logo=gitextensions&logoColor=rgb(0,184,212)
+[forks-url]: https://github.com/velijv/nesp/network/members
+
+[stars-shield]: https://img.shields.io/github/stars/velijv/nesp?style=flat-square](https://img.shields.io/github/stars/velijv/nesp?style=flat-square&color=rgba(255,171,0,0.1)&labelColor=rgba(255,171,0,0.2)&logo=Githubsponsors&logoColor=rgb(255,171,0)
+
+
+[stars-url]: https://github.com/velijv/nesp/stargazers
+[issues-shield]: https://img.shields.io/github/issues/velijv/nesp?style=flat-square](https://img.shields.io/github/issues/velijv/nesp?style=flat-square&color=rgba(213,0,0,0.1)&labelColor=rgba(213,0,0,0.2)&logo=Github&logoColor=rgb(213,0,0)
+[issues-url]: https://github.com/velijv/nesp/issues
+
+
+
+
 _________________
 
 > 💖 If you find this useful, you can [![uwu](https://img.shields.io/github/sponsors/velijv?logo=githubsponsors&label=sponsor%20🫠%20me&style=flat-square&labelColor=rgba(0,0,0,0)&color=rgba(234,74,170,0.5) "for jsut 1 doolar you can lead a por man to fish")](https://github.com/sponsors/velijv) <br>
@@ -59,5 +83,5 @@ _________________
 
 ###### All product names, logos, and brands are property of their respective owners. All company, product and service names used are for identification purposes only. Use of these names, logos, and brands does not imply endorsement.
 
-<img alt="ESPHome" src="static/logos/made-for-esphome.svg" height="48">
-<a href="https://veli.ee"><img src="https://veli.ee/northeast/logo?t=coded+in&c=808080&b=03A9F4&t2=%20📟" height="48" alt="Eesti"></a>
+<img alt="ESPHome" src="static/logos/made-for-esphome.svg" height="48"> <a href="https://veli.ee"><img src="https://veli.ee/northeast/logo?t=coded+in&c=808080&b=03A9F4&t2=%20📟" height="48" alt="Eesti"></a>
+
