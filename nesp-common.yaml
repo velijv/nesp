@@ -40,21 +40,46 @@ esphome:
     version: $project_version
   # special board needs special options    
   platformio_options:
-    platform: https://github.com/platformio/platform-espressif32.git
-    board: esp32-s2-saola-1
-    framework: arduino
-    platform_packages:
-      - framework-arduinoespressif32 @ https://github.com/espressif/arduino-esp32    
+    board_build.flash_mode: qio
+    board_build.core: esp32
+    board_build.mcu: esp32s2
+    board_build.variant": esp32s2
+    board_build.f_cpu: 240000000L
+    board_build.f_flash: 80000000L
+    board_build.flash_size: 16MB
+    board_upload.maximum_ram_size: 327680
+    board_upload.maximum_size": 16777216
+    board_upload.speed": 460800
+# TAKEN FROM WLED MM - https://github.com/MoonModules/WLED
+    build_flags: [
+      "-DARDUINO_ARCH_ESP32S2",
+      "-DCONFIG_IDF_TARGET_ESP32S2=1",
+      "-DARDUINO_USB_MSC_ON_BOOT=0",
+      "-DARDUINO_USB_DFU_ON_BOOT=0",
+      "-DCO",
+      "-DARDUINO_USB_MODE=0" # this flag is mandatory for ESP32-S2 !
+      ]
   on_boot:
     priority: -100.0 #  At this priority, pretty much everything should already be initialized. 
     then: 
       - script.execute: show_page_boot
 
 esp32:
-  board: esp32-s2-saola-1
+  board: esp32-s2-kaluga-1 #esp32-s2-saola-1
+  variant: esp32s2
   framework:
-    type: arduino
+    type: esp-idf
     version: latest
+    sdkconfig_options:
+      CONFIG_ESPTOOLPY_FLASHSIZE_16MB: y
+      CONFIG_COMPILER_OPTIMIZATION: CONFIG_COMPILER_OPTIMIZATION_PERF
+      CONFIG_BOOTLOADER_COMPILER_OPTIMIZATION: BOOTLOADER_COMPILER_OPTIMIZATION_PERF
+      CONFIG_COMPILER_OPTIMIZATION_SIZE: y
+      CONFIG_BOOTLOADER_COMPILER_OPTIMIZATION_SIZE: y
+      CONFIG_IDF_TARGET_ESP32S2: y
+      CONFIG_FREERTOS_UNICORE: y # single core
+    advanced:
+      ignore_efuse_mac_crc: true
 
 # To be able to get logs from the device via serial and api.
 logger:
@@ -450,6 +475,16 @@ qr_code:
 spi:
   clk_pin: 14 # sck : 14
   mosi_pin: 33 # sda : 33
+
+
+##########################################################
+#### Would be nice and modern, but can not use this:
+# display: # https://esphome.io/components/display/ili9xxx
+#  - platform: ili9xxx
+#    model: ST7789V
+### Because:
+### LOG ERROR: CANNOT ALLOCATE MEMORY FOR DISPLAY
+##########################################################
 
 display: # 240 x 320
   - platform: st7789v

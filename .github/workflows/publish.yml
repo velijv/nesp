@@ -9,5 +9,7 @@ jobs:
   build:
     uses: esphome/workflows/.github/workflows/publish.yml@main
     with:
-      files: nesp.yaml
-      name: nesp
+    - files: nesp-s2.yaml
+      name: nESP-S2
+    - files: nesp-s3.yaml
+      name: nESP-S3

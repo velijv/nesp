@@ -1,0 +1,61 @@
+packages:
+  api: !include nesp-common.yaml
+
+esphome:
+  name: ${device_name}
+  # Automatically add the mac address to the name
+  # so you can use a single firmware for all devices
+  name_add_mac_suffix: false  
+  friendly_name: ${friendly_name}
+  comment: ${device_description}
+  # This will allow for (future) project identification,
+  # configuration and updates.  
+  project:
+    name: ${project_base}.${project_name}
+    version: $project_version
+  # special board needs special options    
+  platformio_options:
+    board_build.flash_mode: qio
+    board_build.core: esp32
+    board_build.mcu: esp32s2
+    board_build.variant": esp32s2
+    board_build.f_cpu: 240000000L
+    board_build.f_flash: 80000000L
+    board_build.flash_size: 16MB
+    board_upload.maximum_ram_size: 327680
+    board_upload.maximum_size": 16777216
+    board_upload.speed": 460800
+# TAKEN FROM WLED MM - https://github.com/MoonModules/WLED
+    build_flags: [
+      "-DARDUINO_ARCH_ESP32S2",
+      "-DCONFIG_IDF_TARGET_ESP32S2=1",
+      "-DARDUINO_USB_MSC_ON_BOOT=0",
+      "-DARDUINO_USB_DFU_ON_BOOT=0",
+      "-DCO",
+      "-DARDUINO_USB_MODE=0" # this flag is mandatory for ESP32-S2 !
+      ]
+  on_boot:
+    priority: -100.0 #  At this priority, pretty much everything should already be initialized. 
+    then: 
+      - script.execute: show_page_boot
+
+esp32:
+  board: esp32-s2-kaluga-1 #esp32-s2-saola-1
+  variant: esp32s2
+  framework:
+    type: esp-idf
+    version: latest
+    sdkconfig_options:
+      CONFIG_ESPTOOLPY_FLASHSIZE_16MB: y
+      CONFIG_COMPILER_OPTIMIZATION: CONFIG_COMPILER_OPTIMIZATION_PERF
+      CONFIG_BOOTLOADER_COMPILER_OPTIMIZATION: BOOTLOADER_COMPILER_OPTIMIZATION_PERF
+      CONFIG_COMPILER_OPTIMIZATION_SIZE: y
+      CONFIG_BOOTLOADER_COMPILER_OPTIMIZATION_SIZE: y
+      CONFIG_IDF_TARGET_ESP32S2: y
+      CONFIG_FREERTOS_UNICORE: y # single core
+    advanced:
+      ignore_efuse_mac_crc: true
+
+# This should point to the public location of this yaml file.
+dashboard_import:
+  package_import_url: github://velijv/nesp/nesp-s2.yaml@main
