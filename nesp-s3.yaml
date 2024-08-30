@@ -20,14 +20,14 @@ esphome:
     board_build.variant: esp32s3
 # TAKEN FROM WLED MM - https://github.com/MoonModules/WLED
     build_flags: [
-      - "-DESP32",
-      - "-DARDUINO_ARCH_ESP32",
-      - "-DARDUINO_ARCH_ESP32S3",
-      - "-DCONFIG_IDF_TARGET_ESP32S3=1",
-      - "-D CONFIG_ASYNC_TCP_USE_WDT=0",
-      - "-DARDUINO_USB_MSC_ON_BOOT=0",
-      - "-DARDUINO_DFU_ON_BOOT=0",
-      - "-DCO"
+      "-DESP32",
+      "-DARDUINO_ARCH_ESP32",
+      "-DARDUINO_ARCH_ESP32S3",
+      "-DCONFIG_IDF_TARGET_ESP32S3=1",
+      "-D CONFIG_ASYNC_TCP_USE_WDT=0",
+      "-DARDUINO_USB_MSC_ON_BOOT=0",
+      "-DARDUINO_DFU_ON_BOOT=0",
+      "-DCO"
 ##########################################################
 #  ;; please make sure that the following flags are properly set (to 0 or 1) by your board.json
 #  ;; ARDUINO_USB_MODE, ARDUINO_USB_CDC_ON_BOOT
