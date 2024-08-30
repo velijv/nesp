@@ -10,7 +10,8 @@ jobs:
     strategy:
       matrix:
         file:
-          - nesp.yaml
+          - nesp-s3.yaml
+          - nesp-s2.yaml  
     steps:
       - name: Checkout source code
         uses: actions/checkout@v2
