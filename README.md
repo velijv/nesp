@@ -89,3 +89,4 @@ _________________
 
 <img alt="ESPHome" src="static/logos/made-for-esphome.svg" height="48"> <a href="https://veli.ee"><img src="https://veli.ee/northeast/logo?t=coded+in&c=808080&b=03A9F4&t2=%20📟" height="48" alt="Eesti"></a>
 
+[![nESP © 2024 by Veli-Johan Veromann is licensed under Attribution-NonCommercial-NoDerivatives 4.0 International](https://img.shields.io/badge/Licence-CC--BY--NC--ND%204.0-rgba%280%2C0%2C0%2C0%29?logo=CreativeCommons&logoColor=rgba(231,53,44,1)&labelColor=rgba(231,53,44,0)&style=flat-square&color=rgba(231,53,44,0.1))](https://creativecommons.org/licenses/by-nc/4.0/ "nESP © 2024 by Veli-Johan Veromann is licensed under Attribution-NonCommercial-NoDerivatives 4.0 International")
