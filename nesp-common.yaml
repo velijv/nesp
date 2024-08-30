@@ -26,44 +26,6 @@ substitutions:
   ap_ssid: ${device_name}
   ap_password: ${device_name}
 
-esphome:
-  name: ${device_name}
-  # Automatically add the mac address to the name
-  # so you can use a single firmware for all devices
-  name_add_mac_suffix: false  
-  friendly_name: ${friendly_name}
-  comment: ${device_description}
-  # This will allow for (future) project identification,
-  # configuration and updates.  
-  project:
-    name: ${project_base}.${project_name}
-    version: $project_version
-  # special board needs special options    
-  platformio_options:
-    board_build.flash_mode: qio
-    board_build.core: esp32
-    board_build.mcu: esp32s2
-    board_build.variant": esp32s2
-    board_build.f_cpu: 240000000L
-    board_build.f_flash: 80000000L
-    board_build.flash_size: 16MB
-    board_upload.maximum_ram_size: 327680
-    board_upload.maximum_size": 16777216
-    board_upload.speed": 460800
-# TAKEN FROM WLED MM - https://github.com/MoonModules/WLED
-    build_flags: [
-      "-DARDUINO_ARCH_ESP32S2",
-      "-DCONFIG_IDF_TARGET_ESP32S2=1",
-      "-DARDUINO_USB_MSC_ON_BOOT=0",
-      "-DARDUINO_USB_DFU_ON_BOOT=0",
-      "-DCO",
-      "-DARDUINO_USB_MODE=0" # this flag is mandatory for ESP32-S2 !
-      ]
-  on_boot:
-    priority: -100.0 #  At this priority, pretty much everything should already be initialized. 
-    then: 
-      - script.execute: show_page_boot
-
 # To be able to get logs from the device via serial and api.
 logger:
 
