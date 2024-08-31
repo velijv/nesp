@@ -6,7 +6,7 @@
 ![GitHub repo file or directory count](https://img.shields.io/github/directory-file-count/velijv/nesp?style=flat-square&color=rgba(24,188,242,0.1)&labelColor=rgba(24,188,242,0.2)&logo=Github&logoColor=18BCF2) ![GitHub repo size](https://img.shields.io/github/repo-size/velijv/nesp?style=flat-square&color=rgba(24,188,242,0.1)&labelColor=rgba(24,188,242,0.2)&logo=Git&logoColor=18BCF2) ![GitHub commit activity](https://img.shields.io/github/commit-activity/y/velijv/nesp?style=flat-square&color=rgba(24,188,242,0.1)&labelColor=rgba(24,188,242,0.2)&logo=GithubActions&logoColor=18BCF2) [![Contributors][contributors-shield]][contributors-url]
 [![Forks][forks-shield]][forks-url]
 [![Stargazers][stars-shield]][stars-url]
-[![Issues][issues-shield]][issues-url]
+[![Issues][issues-shield]][issues-url] [![Github Sponsor](https://img.shields.io/github/sponsors/velijv?logo=githubsponsors&label=Sponsors&style=flat&labelColor=rgba(234,74,170,0.2)&logoColor=rgb(234,74,170)&color=rgba(234,74,170,0.1) "for jsut 1 doolar you can lead a por man to fish")](https://github.com/sponsors/velijv)
 
 
 # nESP
