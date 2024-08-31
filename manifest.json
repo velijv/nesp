@@ -1,18 +1,18 @@
 {
-  "name": "nESP-S2",
+  "name": "nESP-S3",
   "version": "",
   "home_assistant_domain": "esphome",
   "new_install_skip_erase": false,
   "builds": [
     {
-      "chipFamily": "ESP32-S2",
+      "chipFamily": "ESP32-S3",
       "ota": {
-        "path": "nesp-esp32s2/nesp-esp32s2.ota.bin",
-        "md5": "42baff2f0283a3fbaeeb82d62535bc3d"
+        "path": "nesp-esp32s3/nesp-esp32s3.ota.bin",
+        "md5": "a2b9f5d3d7770ba29f973fe7dcc7c655"
       },
       "parts": [
         {
-          "path": "nesp-esp32s2/nesp-esp32s2.factory.bin",
+          "path": "nesp-esp32s3/nesp-esp32s3.factory.bin",
           "offset": 0
         }
       ]
